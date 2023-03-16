@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Energy Produced vs Diesel Consumed</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartBox {
+        width: 700px;
+        padding: 20px;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="chartBox">
+        <h1
+              style="
+                font-size: 20px;
+                text-align: center;
+                margin-bottom: 5px;
+                background-color: white;
+              "
+            >
+            Energy Produced vs Diesel Consumed
+            </h1>
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script>
+    // setup 
+    const data = {
+      labels: ['1', '2', '3', '4', '5'],
+      datasets: [{
+        label: 'Energy Produced',
+        data: [20, 60, 40, 80, 10],
+        backgroundColor: [
+          'rgba(0, 0, 255, 1)',
+        ],
+        borderColor: [
+          'rgba(0, 0, 255, 1)',
+        ],
+        tension:0
+      },
+      {
+        label: 'Diesel Consumed',
+        data: [100, 20,40,80, 40],
+        backgroundColor: [
+          'rgba(255, 165, 0, 1)',
+        ],
+        borderColor: [
+          'rgba(255, 165, 0, 1)',
+        ],
+        tension:0
+      }]
+    };
+
+    // config 
+    const config = {
+      type: 'line',
+      data:data,
+      options: {
+        scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "UNITS",
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Generator",
+              },
+              grid: {
+                display: false,
+              },
+            },
+        }
+      }
+    };
+
+    // render init block
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+    </script>
+
+  </body>
+</html>
