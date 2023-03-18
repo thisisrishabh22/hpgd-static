@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DRILL DOWN Chart</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartBox {
+        width: 700px;
+        padding-top: 60px;
+        padding-left: 300px;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+        <button onclick="resetChart()">Back</button>
+      </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script>
+    // setup 
+    const data = {
+      labels: ['Mon', 'Tue',],
+      datasets: [{
+        label: 'Power Generator',
+        data: [18, 12, 10, 7, 5],
+        backgroundColor:'rgba(54, 162, 235, 1)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+    // Datasets
+    const Mon = {
+      labels: ['Good', 'Bad', 'Worst'],
+      datasets: [{
+        label: 'Mon',
+        data: [8, 5, 3, 7, 6],
+        backgroundColor: 'rgba(54, 162, 235, 1)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+    const Tue = {
+      labels: ['Good', 'Bad', 'Worst'],
+      datasets: [{
+        label: 'Tue',
+        data: [7, 4, 2, 6, 5],
+        backgroundColor: 'rgba(54, 162, 235, 1)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+    const Good = {
+      labels: ['Bad', 'Worst'],
+      datasets: [{
+        label: 'Good',
+        data: [2, 5],
+        backgroundColor: 'rgba(54, 162, 235, 1)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+    const Bad = {
+      labels: ['Good', 'Worst'],
+      datasets: [{
+        label: 'Bad',
+        data: [3, 9],
+        backgroundColor: 'rgba(54, 162, 235, 1)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+    const Worst = {
+      labels: ['Good', 'Bad'],
+      datasets: [{
+        label: 'Worst',
+        data: [2, 7],
+        backgroundColor: 'rgba(54, 162, 235, 1)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+    // config 
+    const config = {
+      type: 'bar',
+      data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          },
+          x: {
+              grid: {
+                display: false,
+              },
+            },
+        }
+      }
+    };
+
+    // render init block
+    const ctx = document.getElementById('myChart');
+    const myChart = new Chart(
+      ctx,
+      config
+    );
+
+    // on click function
+    function clickHandler(click){
+        const points = myChart.getElementsAtEventForMode(click, 'nearest', { intersect: true }, true);
+        if(points.length) {
+            const firstPoint = points[0];
+            // console.log(firstPoint)
+            if(firstPoint.index === 0) {
+                if(myChart.config.data.datasets[0].label === Tue.datasets[0].label){
+                    console.log('Do Nothing')
+                }else {
+                    myChart.config.data = Mon;
+                }
+            }
+            if(firstPoint.index === 1) {
+                if(myChart.config.data.datasets[0].label === Mon.datasets[0].label){
+                    console.log(myChart.config.data.datasets[0].label);
+                    console.log('Do Nothing')
+                }else {
+                    myChart.config.data = Tue;
+                }
+            }
+            if(firstPoint.index === 2) {
+                if(myChart.config.data.datasets[0].label === Good.datasets[0].label){
+                    console.log(myChart.config.data.datasets[0].label);
+                    console.log('Do Nothing')
+                }else {
+                    myChart.config.data = Worst;
+                }
+            }
+            myChart.update();
+        }
+    }
+    ctx.onclick = clickHandler;
+
+    function resetChart(){
+        myChart.config.data=data;
+        myChart.update();
+    }
+    </script>
+
+  </body>
+</html>
