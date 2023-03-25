@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Generator Utilization Status</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .chartBox {
+            width: 700px;
+            padding-top: 60px;
+            padding-left: 300px;
+            background: white;
+        }
+
+        .chartBox canvas:nth-child(2) {
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chartBox">
+        <canvas id="myChart"></canvas>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script>
+        // setup 
+        // Create an array of data for the bar chart
+        const barData = [100, 80, 40, 70, 90];
+
+        // Create an array of labels for the x-axis
+        const labels = ["1", "2", "3", "4", "5"];
+
+        // Create a variable for the line value
+        const lineValue = 80;
+
+        // Create an array of colors for the bar chart
+        const barColors = barData.map((data, index) => {
+            return data > lineValue ? "#407474" : (data == lineValue ? "#46C4DB" : "#0000FF");
+        });
+
+        // Create a new Chart.js chart object
+        const ctx = document.getElementById("myChart").getContext("2d");
+        const myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Bar Chart",
+                        data: barData,
+                        backgroundColor: barColors,
+                        order: 2,
+                    },
+                    {
+                        label: "Line Graph",
+                        data: [lineValue, lineValue, lineValue, lineValue, lineValue],
+                        type: "line",
+                        borderColor: "#E43E3E",
+                        borderWidth: 2,
+                        fill: false,
+                        order: 1,
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        
+                        ticks: {
+                            beginAtZero: true
+                        },
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 0 // remove the circle points
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false //not displaying the legend
+                    }
+                },
+                parsing: {
+                    xAxisKey: 'time'
+                },
+                //   To display the line graph value on hover
+                //   plugins: {
+                //     tooltip: {
+                //       mode: 'nearest',
+                //       intersect: false
+                //     }
+                //   }
+            }
+        });
+
+        function resetChart() {
+            myChart.config.data = data;
+            myChart.update();
+        }
+    </script>
+</body>
+
+</html>

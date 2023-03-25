@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hiranandani Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- boostrap[ icons  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <!-- D3 link -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- style -->
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        .classWithPad {
+            margin: 0px;
+            padding: 10px;
+        }
+
+        /* .row-div {
+            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+        } */
+
+        .asset-para {
+            font-size: 22px;
+            /* color: #0062A9; */
+        }
+
+        .value-para {
+            font-size: 21px;
+            /* color: #0062A9; */
+            /* font-weight: bold; */
+            margin: 0px;
+        }
+
+        .heading-1 {
+            color: #ED3E3E;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .heading-2 {
+            color: #ED3E3E;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .loader {
+            border: 16px solid rgb(193, 218, 228);
+            border-radius: 55%;
+            border-top: 16px solid #4e6868;
+            border-right: 16px solid #4e6868;
+            border-bottom: 16px solid #4e6868;
+            width: 160px;
+            height: 160px;
+            background-color: rgb(229, 231, 232);
+        }
+
+        .loader-inner {
+            /* display: block; */
+            margin-top: 30px;
+            font-size: 2.4rem;
+            font-weight: bold;
+            margin-left: 8px !important;
+
+        }
+
+        #line {
+            width: 100% !important;
+            height: 400px !important;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+
+<body style="background-color: #DFE1E2">
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-expand-md navbar-white"
+        style="background-color: white; border-bottom: 1px solid rgb(219, 216, 216);">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Navbar brand -->
+            <a class="navbar-brand text-dark" style="font-weight: 500; font-size: 25px;" href="#">Brand</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="collapse navbar-collapse d-md-flex flex-md-row me-2 justify-content-end"
+                id="navbarSupportedContent">
+                <!-- Icons -->
+                <ul class="navbar-nav ">
+                    <!-- Toggle Button -->
+                    <div class="form-check form-switch mt-2">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                    </div>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" style="font-weight: 500; font-size: 18px;"
+                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i
+                                class="bi bi-person-fill"></i>
+                            Profile</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">My Account</a></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Container wrapper -->
+    </nav>
+
+    <div class="container-fluid p-3 text-center" style="overflow-x: hidden;">
+        <div class="row bg-white mx-auto rounded-3">
+            <div class="col-xl-4 col-lg-4 d-flex">
+                <div class="col-2 align-self-center">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        style="border: 1px solid gray;">
+                    <label class="form-check-label fw-semibold" for="flexCheckDefault">
+                        Date
+                    </label>
+                </div>
+                <div class="d-flex ">
+                    <form class="col-xs-12 mb-r text-m mx-3 py-3" action="/action_page.php">
+                        <label class="From" for="datemin">From:</label>
+                        <br />
+                        <input class="input rounded" type="date" id="datemin" name="datemin" min="2000-01-01"
+                            style="padding: 6px; ;background: whitesmoke; border: none;">
+                        <br />
+                    </form>
+
+                    <from class="col-md-5 text-m mx-3 py-3 mb-r" action="/action_page.php">
+                        <label class="From" for="datemax">To:</label>
+                        <br />
+                        <input class="input rounded-3" type="date" id="datemax" name="datemax"
+                            style="padding: 6px; ;background: whitesmoke; border: none;"> </input><br /><br />
+                        </form>
+                </div>
+            </div>
+            <div class="col-xl-4 col-xs-12 col-lg-4 d-flex align-self-center">
+                <div class="form-check text-m mx-3 pt-1">
+                    <input class="form-check-input text-m" type="checkbox" value="" id="flexCheckDefault"
+                        style="border: 1px solid gray;">
+                    <label class="form-check-label fw-semibold text-center" for="flexCheckDefault">
+                        Location
+                    </label>
+                </div>
+                <div class="dropdown  s-label">
+                    <select class="rounded" name="cars" id="cars"
+                        style="padding: 6px; width: 300px;background: whitesmoke; border: none;">
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Lucknow">Lucknow</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-xs-12 col-lg-4 d-flex align-self-center">
+                <div class="form-check text-m mx-3 pt-1">
+                    <input class="form-check-input text-m" type="checkbox" value="" id="flexCheckDefault"
+                        style="border: 1px solid gray;">
+                    <label class="form-check-label fw-semibold text-center" for="flexCheckDefault">
+                        Generator
+                    </label>
+                </div>
+                <div class="dropdown s-label">
+                    <select class="rounded" name="cars" id="cars"
+                        style="padding: 6px; width: 200px;background: whitesmoke; border: none;">
+                        <option value="">Gen 1 - Gen 25</option>
+                        <option value="Mumbai">Generator 1</option>
+                        <option value="Delhi">Generator 2</option>
+                        <option value="Lucknow">Generator 3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class=" col-md-6">
+                <div class="classWithPad  rounded-3" style="background: white;">
+                    <h2 class="py-1 heading-1 text-center">Asset Purchase Details</h2>
+                    <div class="row " style=" margin: 0 auto; ">
+
+                        <div class="row justify-content-center text-start">
+                            <p class="col-md-5 asset-para">Company Name</p>
+                            <p class="col-md-5 text-md- text-center asset-para">: Oriental</p>
+                        </div>
+                        <div class="row justify-content-center text-start">
+                            <p class="col-md-5 asset-para">Date of Purchase</p>
+                            <p class="col-md-5 text-md- text-center asset-para" style="padding-left: 40px;">: 14.06.2005
+                            </p>
+                        </div>
+                        <div class="row justify-content-center text-start">
+                            <p class="col-md-5 asset-para">Model No.</p>
+                            <p class="col-md-5 text-md- text-center asset-para" style="padding-right: 30px;">: 25645</p>
+                        </div>
+                        <div class="row justify-content-center text-start">
+                            <p class="col-md-5 asset-para">Warranty Period</p>
+                            <p class="col-md-5 text-md- text-center asset-para" style="padding-right: 24px;">: 5 years
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6 ">
+                <div class="row">
+                    <div class="text-center col-md-6">
+                        <div class="classWithPad rounded-3" style="background: white">
+                            <h2 class="heading-2 pt-2 pb-2 mb-1">Asset Value</h2>
+                            <p class="value-para py-1">200000</p>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="text-center col-md-6 mb-1">
+                        <div class="classWithPad rounded-3" style="background: white">
+                            <h2 class="heading-2 pt-1 pb-0 mb-1">AMC Status</h2>
+                            <p class="value-para ">DONE</p>
+                            <p>*As of February 2023</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="text-center col-md-6">
+                        <div class="classWithPad rounded-3" style="background: white">
+                            <h2 class="heading-2 pt-2 pb-2 mt-0">Consumable Spent</h2>
+                            <p class="value-para py-1">100</p>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="text-center col-md-6">
+                        <div class="classWithPad rounded-3" style="background: white">
+                            <h2 class="heading-2 pt-1 pb-2 mt-1">Age of Generator</h2>
+                            <p class="value-para py-1">15 years</p>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+
+            <div class="col-md-6 ">
+                <div class="row">
+                    <div class="text-center col-md-6">
+                        <div class="classWithPad rounded-3 py-3" style="background: white">
+                            <h3 class="pb-2">Maintenance Cost</h3>
+                            <div class="loader" style="margin: 0 auto;">
+                                <div class="loader-inner" style="width: 100%;">80%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center col-md-6 mb-1">
+                        <div class="classWithPad rounded-3  py-3" style="background: white">
+                            <h3 class="pb-2">Running Status</h3>
+                            <div class="loader " style="margin: 0 auto;">
+                                <div class="loader-inner " style="width: 100%;">80%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6 ">
+                <div class="">
+                    <div class="row">
+                        <div class="text-center col-md-6">
+                            <div class="classWithPad rounded-3  py-3" style="background: white">
+                                <h3 class="pb-2">Energy Produced</h3>
+                                <div class="loader" style="margin: 0 auto;">
+                                    <div class="loader-inner" style="width: 100%;">80%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center col-md-6 mb-1">
+                            <div class="classWithPad rounded-3  py-3" style="background: white">
+                                <h3 class="pb-2"> Running Hours</h3>
+                                <div class="loader" style="margin: 0 auto;">
+                                    <div class="loader-inner" style="width: 100%;">80%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="container-fluid col-12 bg-white rounded-3 mt-3">
+            <canvas id="line"></canvas>
+        </div>
+
+    </div>
+
+
+    <script>
+        ///wave chart
+        const ctl = document.getElementById('line');
+
+        new Chart(ctl, {
+            type: 'line',
+            data: {
+
+                datasets: [{
+                    type: 'line',
+                    label: 'data1',
+                    data: [8, 2, 6, 3, 8, 1, 11, 9, 7],
+                    backgroundColor: '#46C4DB',
+                    // bordertype: 'line'Color: 'rgb(250, 236, 37)',
+                    borderWidth: 1,
+                    fill: true,
+                    tension: 0.5,
+                },
+                {
+                    // ,
+                    // label: 'data2',
+                    data: [0, 4, 5, 6, 2, 6, 6],
+                    backgroundColor: '#407474',
+                    // borderColor: 'rgb(252, 158, 17)',
+                    borderWidth: 1,
+                    fill: true,
+                    tension: 0.4,
+                }],
+                labels: ['1', '2', '3', '4', '5', '6', '7'],
+            },
+
+        });
+
+        const toggleSwitch = document.querySelector('#flexSwitchCheckDefault');
+        const body = document.querySelector('body');
+        const classWithPad = document.querySelectorAll('.classWithPad');
+        const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        const paragraphs = document.querySelectorAll('.classWithPad p'); // get all 'p' tags within the divs
+        const navbar = document.querySelector('.navbar');
+        const chartBackground = document.querySelector('.chart-container');
+
+        toggleSwitch.addEventListener('change', () => {
+            if (toggleSwitch.checked) {
+                // set dark mode styles
+                body.style.backgroundColor = '#262626';
+                navbar.style.backgroundColor = '#262626';
+                navbar.querySelectorAll('.text-dark').forEach(el => el.classList.replace('text-dark', 'text-light'));
+                navbar.querySelectorAll('.dropdown-item').forEach(el => el.classList.replace('text-dark', 'text-light'));
+                classWithPad.forEach(div => {
+                    div.style.backgroundColor = '#404040';
+                });
+                headings.forEach(heading => {
+                    heading.style.color = '#fff';
+                });
+                // set color of 'p' tag with value "DONE" to green
+                paragraphs.forEach(paragraph => {
+                    if (paragraph.textContent === 'DONE') {
+                        paragraph.style.color = 'green';
+                    } else {
+                        paragraph.style.color = '#fff';
+                    }
+                });
+                ctl.parentNode.style.backgroundColor = '#404040';
+            } else {
+                // set light mode styles
+                body.style.backgroundColor = '#DFE1E2';
+                navbar.style.backgroundColor = 'white';
+                navbar.querySelectorAll('.text-light').forEach(el => el.classList.replace('text-light', 'text-dark'));
+                navbar.querySelectorAll('.dropdown-item').forEach(el => el.classList.replace('text-light', 'text-dark'));
+                classWithPad.forEach(div => {
+                    div.style.backgroundColor = '#fff';
+                });
+                headings.forEach(heading => {
+                    heading.style.color = '#333';
+                });
+                // set color of 'p' tag with value "DONE" to green
+                paragraphs.forEach(paragraph => {
+                    if (paragraph.textContent === 'DONE') {
+                        paragraph.style.color = 'green';
+                    } else {
+                        paragraph.style.color = '#333';
+                    }
+                });
+                ctl.parentNode.style.backgroundColor = '#fff';
+            }
+        });
+
+
+        // set initial colors to light mode
+        body.style.backgroundColor = '#DFE1E2';
+        classWithPad.forEach(div => {
+            div.style.backgroundColor = '#fff';
+        });
+        headings.forEach(heading => {
+            heading.style.color = '#333'; // set headings color to default
+        });
+        paragraphs.forEach(paragraph => {
+            if (paragraph.textContent === 'DONE') {
+                paragraph.style.color = 'green';
+            } else {
+                paragraph.style.color = '#333';
+            }
+        })
+        toggleSwitch.checked = false;
+
+    </script>
+
+    <!-- boostrapp js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

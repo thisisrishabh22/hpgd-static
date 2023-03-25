@@ -117,7 +117,8 @@
     function clickHandler(click){
         const points = myChart.getElementsAtEventForMode(click, 'nearest', { intersect: true }, true);
         if(points.length) {
-            const firstPoint = points[0];
+          const firstPoint = points[0];
+          console.log(firstPoint.index)
             // console.log(firstPoint)
             if(firstPoint.index === 0) {
                 if(myChart.config.data.datasets[0].label === Tue.datasets[0].label){
